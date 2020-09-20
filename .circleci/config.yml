@@ -43,5 +43,5 @@ jobs:
           name: Deploy to Heroku
           command: |
             docker login --username=$HEROKU_LOGIN --password=$HEROKU_TOKEN registry.heroku.com
-            docker tag tomspencercodurance/my-walking-skeleton-api:$CIRCLE_BUILD_NUM registry.heroku.com/$HEROKU_APP_NAME/web
+            docker tag tomspencercodurance/my-walking-skeleton-api registry.heroku.com/$HEROKU_APP_NAME/web
             docker push registry.heroku.com/$HEROKU_APP_NAME/web
