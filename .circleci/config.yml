@@ -39,9 +39,13 @@ jobs:
       - store_artifacts:
           path: target/classes
           destination: my-walking-skeleton
-      - run:
-          name: Deploy to Heroku
+      - run: bash .circleci/setup-heroku.sh
+      - add_ssh_keys:
+          fingerprints:
+            - $HEROKU_SSH_FINGERPRINT
+      - deploy:
+          name: Deploy to Heroku if tests pass and branch is master
           command: |
-            docker login --username=$HEROKU_LOGIN --password=$HEROKU_TOKEN registry.heroku.com
-            docker tag tomspencercodurance/my-walking-skeleton-api registry.heroku.com/$HEROKU_APP_NAME/web
-            docker push registry.heroku.com/$HEROKU_APP_NAME/web
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+            fi
