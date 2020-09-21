@@ -39,12 +39,19 @@ jobs:
       - store_artifacts:
           path: target/classes
           destination: my-walking-skeleton
-  deploy:
-    docker:
-      - image: my-walking-skeleton-api
-    steps:
-      - checkout
       - run:
-          name: Deploy Master to Heroku
+          name: Setup Heroku
           command: |
-            git push https://heroku:$HEROKU_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git master
+            curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+            chmod +x .circleci/setup-heroku.sh
+            .circleci/setup-heroku.sh
+      - run:
+          name: Deploy to Heroku
+          command: |
+            mkdir app
+            cd app/
+            heroku create
+            # git push https://heroku:$HEROKU_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git master
+            echo ${HEROKU_API_KEY}
+            echo ${HEROKU_APP}
+            git push https://heroku:${HEROKU_TOKEN}@git.heroku.com/${HEROKU_APP_NAME}.git master
