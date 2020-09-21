@@ -43,8 +43,6 @@ jobs:
           name: Setup Heroku
           command: |
             curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
-            chmod +x .circleci/setup-heroku.sh
-            .circleci/setup-heroku.sh
       - run:
           name: Deploy to Heroku
           command: |
